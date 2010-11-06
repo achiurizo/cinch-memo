@@ -1,5 +1,9 @@
+require 'cinch'
+
 module Cinch
-  module Memo
-    # Your code goes here...
+  module Plugins
+    module Memo
+      autoload :Base,   'cinch-memo/base'
+    end
   end
 end
