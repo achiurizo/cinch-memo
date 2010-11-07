@@ -23,6 +23,8 @@ module Cinch
             end
         end
 
+        match %r{memo (\S*) (.*)}, :method => :store_message
+        match %r{memo\?},          :method => :get_message
 
         # Stores message to designated user.
         def store_message(m, nick, message)
@@ -37,7 +39,7 @@ module Cinch
         # Gets messages for the designated user
         def get_message(m)
           messages = @backend.retrieve(m.user.nick)
-          unless messages.empty?
+          unless messages.nil? || messages.empty?
             messages.each { |msg| m.reply msg }
           else
             m.reply "There are no messages for you."
