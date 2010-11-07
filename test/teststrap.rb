@@ -1,6 +1,8 @@
 require 'rubygems'
+require 'json'
 require 'riot'
 require 'mocha'
+require 'timecop'
 require File.expand_path('../../lib/cinch-memo',__FILE__)
 
 class Riot::Situation

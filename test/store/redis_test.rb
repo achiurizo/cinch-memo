@@ -1,6 +1,6 @@
 require File.expand_path('../../teststrap',__FILE__)
-
-context "Redis" do 
+require 'redis'
+context "Redis" do
   dont_register!
   setup { @bot = mock() }
   
@@ -12,17 +12,31 @@ context "Redis" do
     end
     Cinch::Plugins::Memo::Base
   end
-  
+
   context "#initialize" do
-    setup { @redis_class = mock('redis_class')}
-    setup { @redis_class.expects(:new).with(:host => 'localhost', :port => '6709') }
+    setup { ::Redis.expects(:new).with(:host => 'localhost', :port => '6709') }
     setup { base.new(@bot) }
     asserts_topic.assigns :backend
   end
-  
-  context "#store" do     
+
+  context "#store" do
+    setup do
+      Timecop.freeze(Time.now)
+      backend = mock() ; backend.expects(:sadd).with('bob', ['chris','yo yo', Time.now].to_json).returns(true)
+      ::Redis.expects(:new).with(:host => 'localhost', :port => '6709').returns(backend)
+      Cinch::Plugins::Memo::Redis.new('localhost','6709')
+    end
+    asserts("that it stores message") { topic.store('bob', 'chris','yo yo') }
   end
-  
-  context "#retrieve" do 
+
+  context "#retrieve" do
+    setup do
+      Timecop.freeze(Time.now)
+      backend = mock() ; backend.expects(:smembers).with("bob").returns("\[\"a\",\"b\",\"c\"\]")
+      backend.expects(:del).with('bob').returns(true)
+      ::Redis.expects(:new).with(:host => 'localhost', :port => '6709').returns(backend)
+      Cinch::Plugins::Memo::Redis.new('localhost','6709')
+    end
+    asserts("that it retrieves message") { topic.retrieve('bob') }
   end
 end

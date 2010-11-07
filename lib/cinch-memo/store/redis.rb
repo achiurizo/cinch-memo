@@ -1,5 +1,5 @@
 require 'redis'
-
+require 'json'
 module Cinch
   module Plugins
     module Memo
@@ -10,12 +10,12 @@ module Cinch
         end
         
         def store(recipient, sender, message)
-          @backend.sadd recipient, [sender, message, Time.now].to_json
+          @backend.sadd recipient, [sender, message, Time.now.to_s].to_json
         end
         
         def retrieve(recipient)
-          messages = @backend.get recipient
-          @backend.srem(recipient)
+          messages = @backend.smembers recipient
+          @backend.del(recipient)
           messages
         end
 

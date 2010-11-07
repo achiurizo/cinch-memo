@@ -24,4 +24,5 @@ Gem::Specification.new do |s|
   s.add_dependency 'redis'
   s.add_development_dependency 'riot', '~>0.12.0'
   s.add_development_dependency 'mocha'
+  s.add_development_dependency 'timecop'
 end
