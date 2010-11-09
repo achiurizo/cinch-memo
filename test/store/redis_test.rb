@@ -14,7 +14,7 @@ context "Redis" do
   end
 
   context "#initialize" do
-    setup { ::Redis.expects(:new).with(:host => 'localhost', :port => '6709') }
+    setup { ::Redis.expects(:new).with(:host => 'localhost', :port => '6709', :thread_safe => true) }
     setup { base.new(@bot) }
     asserts_topic.assigns :backend
   end
@@ -23,7 +23,7 @@ context "Redis" do
     setup do
       Timecop.freeze(Time.now)
       backend = mock() ; backend.expects(:sadd).with('bob', ['chris','yo yo', Time.now].to_json).returns(true)
-      ::Redis.expects(:new).with(:host => 'localhost', :port => '6709').returns(backend)
+      ::Redis.expects(:new).with(:host => 'localhost', :port => '6709', :thread_safe=>true).returns(backend)
       Cinch::Plugins::Memo::Redis.new('localhost','6709')
     end
     asserts("that it stores message") { topic.store('bob', 'chris','yo yo') }
@@ -34,7 +34,7 @@ context "Redis" do
       Timecop.freeze(Time.now)
       backend = mock() ; backend.expects(:smembers).with("bob").returns("\[\"a\",\"b\",\"c\"\]")
       backend.expects(:del).with('bob').returns(true)
-      ::Redis.expects(:new).with(:host => 'localhost', :port => '6709').returns(backend)
+      ::Redis.expects(:new).with(:host => 'localhost', :port => '6709', :thread_safe=>true).returns(backend)
       Cinch::Plugins::Memo::Redis.new('localhost','6709')
     end
     asserts("that it retrieves message") { topic.retrieve('bob') }

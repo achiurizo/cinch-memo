@@ -6,7 +6,7 @@ module Cinch
       class Redis
 
         def initialize(host, port)
-          @backend = ::Redis.new(:host => host, :port => port)
+          @backend = ::Redis.new(:host => host, :port => port, :thread_safe => true)
         end
         
         def store(recipient, sender, message)
