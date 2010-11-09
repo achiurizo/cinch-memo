@@ -4,7 +4,7 @@ module Cinch
       class Base
         include Cinch::Plugin
         attr_accessor :backend
-        
+
         class << self
           attr_accessor :store, :host, :port
 
@@ -15,16 +15,25 @@ module Cinch
 
         def initialize(*args)
           super
-          @backend = 
-            case self.class.store
-            when :redis then Cinch::Plugins::Memo::Redis.new(self.class.host, self.class.port)
-            else
-              self.class.store
-            end
+          @backend =
+          case self.class.store
+          when :redis then Cinch::Plugins::Memo::Redis.new(self.class.host, self.class.port)
+          else
+            self.class.store
+          end
         end
 
         match %r{memo (\S*) (.*)}, :method => :store_message
         match %r{memo\?},          :method => :get_message
+
+        listen_to :join
+
+        def listen(m)
+          messages = @backend.retrieve(m.user.nick)
+          if messages || !messages.empty?
+            messages.each { |msg| User(m.user.nick).send(msg) }
+          end
+        end
 
         # Stores message to designated user.
         def store_message(m, nick, message)
