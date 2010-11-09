@@ -33,6 +33,8 @@ Currently, only Redis is available as a backend store.
 
   * !memo [nick] [message]    - stores the message for the user
   * !memo?                    - returns memo's for your nick
+
+The bot will also auto message a user on join of the channel if there are messages for that user.
   
 ## Integration with Cinch ##
 
