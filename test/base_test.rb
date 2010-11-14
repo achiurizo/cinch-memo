@@ -84,8 +84,7 @@ context "Base" do
     end
     context "with messages" do
       setup do
-        @u = mock() ; @u.expects(:send).with('john')
-        @base.expects(:User).with('chris').returns(@u)
+        @replier.expects(:send).with('john')
         @backend.expects(:retrieve).with('chris').returns(['john'])
         @base.backend = @backend
       end
@@ -95,7 +94,7 @@ context "Base" do
     context "without messages" do
       setup do
         @backend.expects(:retrieve).with('chris').returns([])
-        @base.expects(:User).with('chris').never
+        @replier.expects(:send).with('john').never
         @base.backend = @backend
       end
       asserts("that it doesn't ping them") { @base.listen(@message) }

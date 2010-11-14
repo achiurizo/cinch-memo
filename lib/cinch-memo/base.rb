@@ -31,7 +31,7 @@ module Cinch
         def listen(m)
           messages = @backend.retrieve(m.user.nick)
           if messages || !messages.empty?
-            messages.each { |msg| User(m.user.nick).send(msg) }
+            messages.each { |msg| m.user.send(msg) }
           end
         end
 
