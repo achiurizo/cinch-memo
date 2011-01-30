@@ -6,7 +6,7 @@ module Cinch
         attr_accessor :backend
 
         class << self
-          attr_accessor :store, :host, :port
+          attr_accessor :store, :host, :port, :db, :collection
 
           def configure(&block)
             yield self
@@ -18,6 +18,7 @@ module Cinch
           @backend =
           case self.class.store
           when :redis then Cinch::Plugins::Memo::Redis.new(self.class.host, self.class.port)
+          when :mongo then Cinch::Plugins::Memo::Mongo.new(self.class.host, self.class.port, :db => self.class.db, :collection => self.class.collection)
           else
             self.class.store
           end

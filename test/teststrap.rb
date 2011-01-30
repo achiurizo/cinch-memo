@@ -3,7 +3,7 @@ require 'json'
 require 'riot'
 require 'mocha'
 require 'timecop'
-require File.expand_path('../../lib/cinch-memo',__FILE__)
+require File.expand_path('../../lib/cinch/plugins/memo',__FILE__)
 
 class Riot::Situation
   include Mocha::API

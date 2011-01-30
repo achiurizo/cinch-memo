@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 $:.push File.expand_path("../lib", __FILE__)
-require "cinch-memo/version"
+require "cinch/plugins/memo/version"
 
 Gem::Specification.new do |s|
   s.name        = "cinch-memo"
