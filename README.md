@@ -42,7 +42,7 @@ It's simple. follow the guide on cinch or do something like:
     
     # mybot.rb
     require 'cinch'
-    require 'cinch-memo'
+    require 'cinch/plugins/memo'
 
     Cinch::Plugins::Memo::Base.configure do |c|
       c.store   = :redis          # data store

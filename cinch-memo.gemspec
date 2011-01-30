@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Arthur Chiu"]
   s.email       = ["mr.arthur.chiu@gmail.com"]
-  s.homepage    = "http://rubygems.org/gems/cinch-memo"
+  s.homepage    = "https://github.com/achiu/cinch-memo"
   s.summary     = %q{Memo Plugin for Cinch}
   s.description = %q{Give your Cinch bot memo functionality!}
 
@@ -19,10 +19,10 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
   
-  s.add_dependency 'cinch'
+  s.add_dependency 'cinch', '~>1.1.1'
   s.add_dependency 'json'
-  s.add_dependency 'redis'
-  s.add_development_dependency 'riot', '~>0.12.0'
-  s.add_development_dependency 'mocha'
-  s.add_development_dependency 'timecop'
+  s.add_dependency 'redis' 
+  s.add_development_dependency 'riot',    '~>0.12.0'
+  s.add_development_dependency 'mocha',   '~>0.9.10'
+  s.add_development_dependency 'timecop', '~>0.3.5'
 end
