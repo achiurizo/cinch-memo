@@ -1,0 +1,35 @@
+PATH
+  remote: .
+  specs:
+    cinch-memo (0.1.0)
+      cinch
+      json
+      redis
+
+GEM
+  remote: http://rubygems.org/
+  specs:
+    cinch (1.1.1)
+    json (1.5.1)
+    mocha (0.9.10)
+      rake
+    rake (0.8.7)
+    redis (2.1.1)
+    riot (0.12.1)
+      rr
+      term-ansicolor
+    rr (1.0.2)
+    term-ansicolor (1.0.5)
+    timecop (0.3.5)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  cinch
+  cinch-memo!
+  json
+  mocha
+  redis
+  riot (~> 0.12.0)
+  timecop
