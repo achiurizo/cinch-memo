@@ -24,8 +24,8 @@ module Cinch
           end
         end
 
-        match %r{memo (\S*) (.*)}, :method => :store_message
-        match %r{memo\?},          :method => :get_message
+        match %r{memo (.+?) (.+)}, :method => :store_message
+        match "memo?",             :method => :get_message
 
         listen_to :join
 
