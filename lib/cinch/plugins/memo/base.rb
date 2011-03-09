@@ -31,11 +31,7 @@ module Cinch
         listen_to :join
 
         def listen(m)
-          messages = @backend.retrieve(m.user.nick)
-          if messages || !messages.empty?
-            @bot.info "[memo] Received memos for #{m.user.nick}"
-            messages.each { |msg| m.user.send(msg) }
-          end
+          get_messages(m, true, false)
         end
 
         # Stores message to designated user.
@@ -50,13 +46,20 @@ module Cinch
         end
 
         # Gets messages for the designated user
-        def get_message(m)
+        def get_message(m, private = false, report = true)
           messages = @backend.retrieve(m.user.nick)
           unless messages.nil? || messages.empty?
             @bot.info "[memo] Received memos for #{m.user.nick}"
-            messages.each { |msg| m.reply msg }
+
+            messages.each do |msg|
+              if private
+                m.user.send(msg)
+              else
+                m.reply msg
+              end
+            end
           else
-            m.reply "There are no messages for you."
+            m.reply "There are no messages for you." if report
           end
         end
 
