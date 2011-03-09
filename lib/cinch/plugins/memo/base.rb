@@ -15,6 +15,7 @@ module Cinch
 
         def initialize(*args)
           super
+          @bot.debug "[memo] Connecting to #{self.class.store} store"
           @backend =
           case self.class.store
           when :redis then Cinch::Plugins::Memo::Redis.new(self.class.host, self.class.port)
@@ -32,6 +33,7 @@ module Cinch
         def listen(m)
           messages = @backend.retrieve(m.user.nick)
           if messages || !messages.empty?
+            @bot.info "[memo] Received memos for #{m.user.nick}"
             messages.each { |msg| m.user.send(msg) }
           end
         end
@@ -42,6 +44,7 @@ module Cinch
             m.reply "You can't store a message for me."
           else
             @backend.store(nick,m.user.nick, message)
+            @bot.info "[memo] Stored memo from #{m.user.nick} for #{nick}"
             m.reply "Message saved!"
           end
         end
@@ -50,6 +53,7 @@ module Cinch
         def get_message(m)
           messages = @backend.retrieve(m.user.nick)
           unless messages.nil? || messages.empty?
+            @bot.info "[memo] Received memos for #{m.user.nick}"
             messages.each { |msg| m.reply msg }
           else
             m.reply "There are no messages for you."
