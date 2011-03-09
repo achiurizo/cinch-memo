@@ -5,23 +5,15 @@ module Cinch
         include Cinch::Plugin
         attr_accessor :backend
 
-        class << self
-          attr_accessor :store, :host, :port, :db, :collection
-
-          def configure(&block)
-            yield self
-          end
-        end
-
         def initialize(*args)
           super
-          @bot.debug "[memo] Connecting to #{self.class.store} store"
+          @bot.debug "[memo] Connecting to #{config[:store]} store"
           @backend =
-          case self.class.store
-          when :redis then Cinch::Plugins::Memo::Redis.new(self.class.host, self.class.port)
-          when :mongo then Cinch::Plugins::Memo::Mongo.new(self.class.host, self.class.port, :db => self.class.db, :collection => self.class.collection)
+          case config[:store]
+          when :redis then Cinch::Plugins::Memo::Redis.new(config[:host], config[:port])
+          when :mongo then Cinch::Plugins::Memo::Mongo.new(config[:host], config[:port], :db => config[:db], :collection => config[:collection])
           else
-            self.class.store
+            config[:store]
           end
         end
 
